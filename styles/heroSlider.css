@@ -1,0 +1,121 @@
+/* General styles for the next and previous buttons */
+.hs-previous-button, .hs-next-button {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 45%;
+    z-index: 999;
+    /* Transparency */
+    /* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+    /* IE 5-7 */
+    filter: alpha(opacity=60);
+    /* Netscape */
+    -moz-opacity: 0.6;
+    /* Safari 1.x */
+    -khtml-opacity: 0.6;
+    /* Good browsers */
+    opacity: 0.6;
+}
+
+/* Control the style of next and previous buttons */
+.hs-previous-button {
+    background:url(../../../img/homeSliderLeft.png) no-repeat center;
+    margin:-14px 0 0 0;
+    padding:14px 0 0 0;
+    left: -10px;
+}
+
+.hs-next-button {
+    background:url(../../../img/homeSliderRight.png) no-repeat center;
+    margin:-14px 0 0 0;
+    padding:14px 0 0 0;
+    right: -10px;
+}
+
+/* Hover state style for next and previous buttons */
+.hs-previous-button:hover, .hs-next-button:hover {
+            /* Transparency */
+    /* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    /* IE 5-7 */
+    filter: alpha(opacity=100);
+    /* Netscape */
+    -moz-opacity: 1;
+    /* Safari 1.x */
+    -khtml-opacity: 1;
+    /* Good browsers */
+    opacity: 1;
+}
+
+/* The Navigation bar CSS */
+.hs-navigation {
+    z-index: 999;
+    position: absolute;
+    left: 50%;
+    bottom: 8px;
+}
+.ie7 .hs-navigation {
+    z-index: 999;
+    position: absolute;
+    left: 50%;
+    bottom: 15px;
+}
+.hs-navigation-style {
+    height: 14px;
+    position: relative;
+    left: -50%;
+}
+
+/* The Navigation buttons CSS */
+/* default state */
+.hs-nav-button {
+    width: 14px;
+    height: 14px;
+    margin: 5px;
+    background:url(../../../img/homeSliderNav.png); 
+    position: relative;
+    float: left;
+                    /* Transparency */
+    /* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+    /* IE 5-7 */
+    filter: alpha(opacity=60);
+    /* Netscape */
+    -moz-opacity: 0.6;
+    /* Safari 1.x */
+    -khtml-opacity: 0.6;
+    /* Good browsers */
+    opacity: 0.6;
+}
+
+/* hover state */
+.hs-nav-button:hover{
+    cursor: pointer;
+                /* Transparency */
+    /* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    /* IE 5-7 */
+    filter: alpha(opacity=100);
+    /* Netscape */
+    -moz-opacity: 1;
+    /* Safari 1.x */
+    -khtml-opacity: 1;
+    /* Good browsers */
+    opacity: 1;
+}
+
+/* active slide state */
+.hs-nav-button.active{
+                /* Transparency */
+    /* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    /* IE 5-7 */
+    filter: alpha(opacity=100);
+    /* Netscape */
+    -moz-opacity: 1;
+    /* Safari 1.x */
+    -khtml-opacity: 1;
+    /* Good browsers */
+    opacity: 1;
+}
