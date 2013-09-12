@@ -29,7 +29,24 @@ heroSlider is a customizable and responsive content slider which provides design
 <ul><li>CSS3 3D Transitions!</li></ul>
 
 <h2>Demos</h2>
-<ul><li>Coming shortly</li></ul>
+<ul><li>
+    <strong>HTML</strong>
+    <pre>
+        <div id="carouselContent">
+			<div class="carouselSlide">
+				Slide One's Content!
+			</div>
+			<div class="carouselSlide">
+				Slide Two's Content!
+			</div>
+			<div class="carouselSlide">
+				Slide Three's Content!
+			</div>
+			// You can have any number of slide you like
+		</div>
+    </pre>
+</li></ul>
+
 
 <h2>Changelog</h2>
 <ul><li>September 11th 2013 version 1.2
