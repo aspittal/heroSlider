@@ -7,7 +7,7 @@ Description:
 heroSlider is a customizable and responsive content slider which provides designers and developers a free and easy way to quickly add scrollable content anywhere to a webpage.
 
 Features
-- Trivial to implement
+- <strong>Trivial to implement</strong>
     It's as easy as downloading the code and adding a simple call to some content on your page. (see demos below)
 
 - Very customizable
