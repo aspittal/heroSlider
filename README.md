@@ -1,4 +1,4 @@
-heroSlider v1.1
+heroSlider v1.2
 
 Author: Andrew Spittal Nonko
 Website: nonko.ca
@@ -20,13 +20,15 @@ Features
     The plugin is fully responsive, which means you can drop it in to a mobile site or your existing responsive site without any hassle.
 
 Planned Features:
-- Different styles of transitions
-- Even more customizability with custom events
+- CSS3 3D Transitions!
 
 Demos:
     Coming shortly
 
 Changelog:
+- September 11th 2013 version 1.2
+    - Added Fade Effect
+
 - August 7th 2013 version 1.1:
     - Minimum feature complete
 
