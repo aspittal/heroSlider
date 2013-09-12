@@ -8,9 +8,9 @@
                 autoScroll: true,                   // If slides should automatically scroll by default
                 loop: true,                         // If you should be able to go from last to first and vice versa
                 allowEarlyClick: true,              // If you can change slides while animating.           
-                alwaysShowNav: false                // If there is only one slide, hide the navigation controls
+                alwaysShowNav: false,               // If there is only one slide, hide the navigation controls
+                effect: 'Slide'                     // The effect you would like to use, one of 'Slide', 'Fade'
             }, userOptions);
-            // User Configurable Options
             var $heroSlider = $(this),
                 autoScroll = options.autoScroll,
                 loop = options.loop,
@@ -18,6 +18,7 @@
                 slides = $heroSlider.children(),
                 slideWidth = $heroSlider.width(),
                 slideHeight = $heroSlider.height(),
+                slideId = 'hs-slide-',
                 slideWrapper,
                 delayTimer,
                 nextButton,
@@ -27,7 +28,8 @@
                 slideCount = 0,
                 currentSlide = 1,
                 isFailure = 0,          // Is it MSIE?
-                isAnimateFailure = 0;   // Is it MSIE 6!?
+                isAnimateFailure = 0,   // Is it MSIE 6!?
+                animating = false;   
 
             // Methods
             // Protected Methods
@@ -41,19 +43,29 @@
                     }
                 }
 
+                // Set up our effect functions
+                // This definitely needs to be done in smarter way
+                switch (options.effect) {
+                    case 'Slide':
+                        $heroSlider.setSliderCSS = $heroSlider.setSliderCSSSlide;
+                        $heroSlider.changeSlide = $heroSlider.changeSlideSlide;
+                        $heroSlider.setWrapperCSS = $heroSlider.setWrapperCSSSlide;
+                        $heroSlider.setSlideCSS = $heroSlider.setSlideCSSSlide;
+                    break;
+                    case 'Fade':
+                        $heroSlider.setSliderCSS = $heroSlider.setSliderCSSFade;
+                        $heroSlider.changeSlide = $heroSlider.changeSlideFade;
+                        $heroSlider.setWrapperCSS = $heroSlider.setWrapperCSSFade;
+                        $heroSlider.setSlideCSS = $heroSlider.setSlideCSSFade;
+                    break;
+                }
+
                 // Figure out how many slides we are using
                 slideCount = ($heroSlider.find(options.slideContainer)).length;
 
-                // Apply the slider css and wrap all the slides inside
-                $heroSlider.css({
-                    'overflow': 'hidden',
-                    'position': 'relative'
-                }).wrapInner('<div class="hs-slider-slide-wrapper" />');
-                slideWrapper = $heroSlider.find('.hs-slider-slide-wrapper');
-
-                // Apply some needed styles to the wrapper
-                $heroSlider.setWrapperCSS();
-
+                // Set the css for the slider itself
+                $heroSlider.setSliderCSS();
+                
                 // Set the css for the slides
                 $heroSlider.setSlideCSS();
 
@@ -93,22 +105,59 @@
                     });
 
                     navButtons.click(function () {
-                        if (!slideWrapper.is(':animated') || allowEarlyClick) {
+                        if (!animating || allowEarlyClick) {
                             autoScroll = false;
                             clearInterval(delayTimer);
                             var lastElem = $(this).data('navbutton');
                             var newSlide = parseInt(lastElem) + 1;
                             if (newSlide != currentSlide) {
+                                visibleSlide = currentSlide;
                                 currentSlide = newSlide;
-                                $heroSlider.changeSlide(slides.eq(lastElem));
+                                $heroSlider.changeSlide(currentSlide, visibleSlide);
                             }
                         }
                     });
                 }
 
+                // Assign IDs for DOM reference
+                $heroSlider.setSlideIds();
 
                 // Initialize the timer
                 $heroSlider.resetTimer();
+            };
+
+            // Next Slide
+            $heroSlider.nextSlide = function () {
+                if (!animating || allowEarlyClick) {
+                    visibleSlide = currentSlide;
+                    currentSlide = currentSlide + 1;
+                    if (currentSlide > slideCount) {
+                        if (!loop) {
+                            currentSlide = currentSlide - 1;
+                        } else {
+                            currentSlide = 1;
+                        }
+                    } 
+                    $heroSlider.changeSlide(currentSlide, visibleSlide);
+                    clearInterval(delayTimer);
+                }
+            };
+
+            // Previous Slide
+            $heroSlider.previousSlide = function () {
+                if (!animating || allowEarlyClick) {
+                    visibleSlide = currentSlide;
+                    currentSlide = currentSlide - 1;
+                    if (currentSlide < 1) {
+                        if (!loop) {
+                            currentSlide = currentSlide + 1;
+                        } else {
+                            currentSlide = slideCount;
+                        }
+                    }
+                    $heroSlider.changeSlide(currentSlide, visibleSlide);
+                    clearInterval(delayTimer);
+                }
             };
 
             // Timer Expiry
@@ -125,7 +174,6 @@
 
             // Show Navigation
             $heroSlider.showNav = function () {
-                console.log('test');
                 previousButton.stop(true, true).fadeIn('fast');
                 nextButton.stop(true, true).fadeIn('fast');
                 navigation.stop(true, true).fadeIn('fast');
@@ -138,53 +186,6 @@
                 navigation.stop(true, true).fadeOut('fast');
             };
 
-            // Next Slide
-            $heroSlider.nextSlide = function () {
-                if (!slideWrapper.is(':animated') || allowEarlyClick) {
-                    currentSlide = currentSlide + 1;
-                    if (currentSlide > slideCount) {
-                        if (!loop) {
-                            currentSlide = currentSlide - 1;
-                        } else {
-                            currentSlide = 1;
-                        }
-                    } 
-                    $heroSlider.changeSlide(slides.eq(currentSlide - 1));
-                    clearInterval(delayTimer);
-                }
-            };
-
-            // Previous Slide
-            $heroSlider.previousSlide = function () {
-                if (!slideWrapper.is(':animated') || allowEarlyClick) {
-                    currentSlide = currentSlide - 1;
-                    if (currentSlide < 1) {
-                        if (!loop) {
-                            currentSlide = currentSlide + 1;
-                        } else {
-                            currentSlide = slideCount;
-                        }
-                    }
-                    $heroSlider.changeSlide(slides.eq(currentSlide - 1));
-                    clearInterval(delayTimer);
-                }
-            };
-
-            // Change a slide
-            $heroSlider.changeSlide = function (destinationSlide) {
-                if (slideCount > 1 || options.alwaysShowNav) {
-                    var pos = destinationSlide.position();
-                    slideWrapper.stop().animate({left: -pos.left}, options.animationTime, 'swing', function () {
-                        if (autoScroll) {
-                            $heroSlider.resetTimer();
-                        }
-                    });
-                    navButtons.removeClass('active');
-                    navigation.find('.hs-nav-button[data-navbutton="' + (currentSlide - 1) + '"]').addClass('active');
-                    $heroSlider.trigger('hs-slide-change', currentSlide);
-                }
-            };
-
             // Create the navigation buttons
             $heroSlider.createNavButtons = function () {
                 for (var i = 0; i < slideCount; i++) {
@@ -192,39 +193,6 @@
                 };
                 navButtons = navigation.find('.hs-nav-button');
                 navButtons.first().addClass('active');
-            };
-
-            // Set the css for the slides themselves
-            $heroSlider.setSlideCSS = function () {
-                slideWidth = $heroSlider.width();
-                slideHeight = $heroSlider.height();
-
-                // Apply the slides CSS
-                slides.css({
-                    'height': slideHeight,
-                    'width': slideWidth,
-                    'position': 'relative',
-                    'float': 'left'
-                });
-
-                slideWidth = $heroSlider.width();
-                slideHeight = $heroSlider.height();
-            };
-
-            // Set the CSS for the Wrapper
-            $heroSlider.setWrapperCSS = function () {
-                slideWrapper.css({
-                    'height': slideHeight,
-                    'width': slideWidth * slideCount,
-                    'position': 'relative',
-                    'float': 'left',
-                    'left': -((currentSlide - 1) * slideWidth)
-                });
-            };
-
-            // Resets the slides to slide one, we don't want to do this every resize
-            $heroSlider.resetWrapperPosition = function () {
-                slideWrapper.css({'left': '0px'});
             };
 
             // Set the CSS for the next button
@@ -253,6 +221,14 @@
                 });
             };
 
+            // Set the ids of our slides
+            $heroSlider.setSlideIds = function () {
+                // Initialize the backgrounds
+                $.each(slides, function(index, slide) {
+                    $(slide).attr('id', slideId + (index + 1));
+                });
+            }
+
             // Resize the slides on window size changing
             $(window).resize(function () {
                 $heroSlider.setSlideCSS();
@@ -264,10 +240,126 @@
                 }
             });
 
+            // Effect Methods
+            // Slider Effect
+            // Apply the slider css and wrap all the slides inside
+            $heroSlider.setSliderCSSSlide = function () {
+                $heroSlider.css({
+                    'overflow': 'hidden',
+                    'position': 'relative'
+                }).wrapInner('<div class="hs-slider-slide-wrapper" />');
+                slideWrapper = $heroSlider.find('.hs-slider-slide-wrapper');
+
+                // Apply some needed styles to the wrapper
+                $heroSlider.setWrapperCSSSlide();
+            }
+
+            // Change a slide
+            $heroSlider.changeSlideSlide = function (destinationSlide, visibleSlide) {
+                if (slideCount > 1 || options.alwaysShowNav) {
+                    destinationSlide = $('#' + slideId + destinationSlide);
+                    var pos = destinationSlide.position();
+                    animating = true;
+                    slideWrapper.stop().animate({left: -pos.left}, options.animationTime, 'swing', function () {
+                        if (autoScroll) {
+                            $heroSlider.resetTimer();
+                        }
+                        animating = false;
+                    });
+                    navButtons.removeClass('active');
+                    navigation.find('.hs-nav-button[data-navbutton="' + (currentSlide - 1) + '"]').addClass('active');
+                    $heroSlider.trigger('hs-slide-change', currentSlide);
+                }
+            };
+
+            // Set the css for the slides themselves
+            $heroSlider.setSlideCSSSlide = function () {
+                slideWidth = $heroSlider.width();
+                slideHeight = $heroSlider.height();
+
+                // Apply the slides CSS
+                slides.css({
+                    'height': slideHeight,
+                    'width': slideWidth,
+                    'position': 'relative',
+                    'float': 'left'
+                });
+            };
+
+            // Set the CSS for the Wrapper
+            $heroSlider.setWrapperCSSSlide = function () {
+                slideWrapper.css({
+                    'height': slideHeight,
+                    'width': slideWidth * slideCount,
+                    'position': 'relative',
+                    'float': 'left',
+                    'left': -((currentSlide - 1) * slideWidth)
+                });
+            };
+
+            // Fade Effect
+            // Apply the slider css and wrap all the slides inside
+            $heroSlider.setSliderCSSFade = function () {
+                $heroSlider.css({
+                    'overflow': 'hidden',
+                    'position': 'relative'
+                }).wrapInner('<div class="hs-slider-slide-wrapper" />');
+                slideWrapper = $heroSlider.find('.hs-slider-slide-wrapper');
+                
+                // Apply some needed styles to the wrapper
+                $heroSlider.setWrapperCSSFade();
+            }
+
+            // Change a slide
+            $heroSlider.changeSlideFade = function (destinationSlide, visibleSlide) {
+                if (slideCount > 1 || options.alwaysShowNav) {
+                    animating = true;
+                    destinationSlideObject = $('#' + slideId + destinationSlide);
+                    visibleSlideObject = $('#' + slideId + visibleSlide);
+                    slideWrapper.prepend(destinationSlideObject);
+                    visibleSlideObject.stop().fadeTo(options.animationTime, 0, 'swing', function () {
+                        if (autoScroll) {
+                            $heroSlider.resetTimer();
+                        }
+                        animating = false;
+                    });
+                    destinationSlideObject.stop().fadeTo(1, 1);
+                    navButtons.removeClass('active');
+                    navigation.find('.hs-nav-button[data-navbutton="' + (currentSlide - 1) + '"]').addClass('active');
+                    $heroSlider.trigger('hs-slide-change', currentSlide);
+                }
+            };
+
+            // Set the css for the slides themselves
+            $heroSlider.setSlideCSSFade = function () {
+                slideWidth = $heroSlider.width();
+                slideHeight = $heroSlider.height();
+
+                // Apply the slides CSS
+                slides.css({
+                    'width': '100%',
+                    'height': '400px',
+                    'position': 'absolute',
+                    'top': '0px'
+                });
+
+                slides.hide();
+                slides.first().show();
+            };
+
+            // Set the CSS for the Wrapper
+            $heroSlider.setWrapperCSSFade = function () {
+                slideWrapper.css({
+                    'height': slideHeight,
+                    'width': slideWidth,
+                    'position': 'relative'
+                });
+            };
+
             // Public Methods
             // Change to next slide
             $.fn.heroSlider.nextSlide = function() {
-                $heroSlider.nextSlide();   
+                $heroSlider.nextSlide();
             };
 
             // Change to previous slide
@@ -278,5 +370,7 @@
             // Spin it up!
             return $heroSlider.init();
         });
+
+        
     };
 })(jQuery);
