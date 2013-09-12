@@ -4,7 +4,7 @@ Author: Andrew Spittal Nonko<br />
 Website: nonko.ca
 
 <h2>Description</h2>
-heroSlider is a customizable and responsive content slider which provides designers and developers a free and easy way to quickly add scrollable content anywhere to a webpage.
+heroSlider is a customizable and responsive content slider which provides designers and developers a free and easy way to quickly add content anywhere to a webpage. There are multiple effects supported to change the slides. heroSlider is also designed to allow you to populate the slides with any content you want, not just images!
 
 <h2>Features</h2>
 <ul>
