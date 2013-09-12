@@ -31,20 +31,24 @@ heroSlider is a customizable and responsive content slider which provides design
 <h2>Demos</h2>
 <ul><li>
     <strong>HTML</strong>
+    
     <pre>
+    
         <div id="carouselContent">
-			<div class="carouselSlide">
-				Slide One's Content!
-			</div>
-			<div class="carouselSlide">
-				Slide Two's Content!
-			</div>
-			<div class="carouselSlide">
-				Slide Three's Content!
-			</div>
-			// You can have any number of slide you like
+		<div class="carouselSlide">
+			Slide One's Content!
 		</div>
+		<div class="carouselSlide">
+			Slide Two's Content!
+		</div>
+		<div class="carouselSlide">
+			Slide Three's Content!
+		</div>
+		// You can have any number of slide you like
+	</div>
+	
     </pre>
+
 </li></ul>
 
 
