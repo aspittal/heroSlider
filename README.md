@@ -1,12 +1,12 @@
-<strong>heroSlider v1.2</strong>
+<h1>heroSlider v1.2</h1>
 
-Author: Andrew Spittal Nonko
+Author: Andrew Spittal Nonko<br />
 Website: nonko.ca
 
-<strong>Description</strong>
+<h2>Description</h2>
 heroSlider is a customizable and responsive content slider which provides designers and developers a free and easy way to quickly add scrollable content anywhere to a webpage.
 
-<strong>Features</strong>
+<h2>Features</h2>
 <ul>
     <li><strong>Trivial to implement</strong>
         <ul><li>It's as easy as downloading the code and adding a simple call to some content on your page. (see demos below)</li><ul>
@@ -25,13 +25,13 @@ heroSlider is a customizable and responsive content slider which provides design
     </li>
 </ul>
 
-<strong>Planned Features</strong>
+<h2>Planned Features</h2>
 <ul><li>CSS3 3D Transitions!</li></ul>
 
-<strong>Demos</strong>
+<h2>Demos</strong>
 <ul><li>Coming shortly</li></ul>
 
-<strong>Changelog:
+<h2>Changelog<h2>
 <ul><li>September 11th 2013 version 1.2
     <ul><li>Added Fade Effect</li></ul>
 </li></ul>
