@@ -28,10 +28,10 @@ heroSlider is a customizable and responsive content slider which provides design
 <h2>Planned Features</h2>
 <ul><li>CSS3 3D Transitions!</li></ul>
 
-<h2>Demos</strong>
+<h2>Demos</h2>
 <ul><li>Coming shortly</li></ul>
 
-<h2>Changelog<h2>
+<h2>Changelog</h2>
 <ul><li>September 11th 2013 version 1.2
     <ul><li>Added Fade Effect</li></ul>
 </li></ul>
